@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish4.ConsoleApp", "Bookish4.ConsoleApp\Bookish4.ConsoleApp.csproj", "{EC3E3C2C-F214-48E4-A069-5208FEAD42A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish4..DataAccess", "Bookish4..DataAccess\Bookish4..DataAccess.csproj", "{2887141B-5866-400D-A4C5-AD08B1E92FC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC3E3C2C-F214-48E4-A069-5208FEAD42A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3E3C2C-F214-48E4-A069-5208FEAD42A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3E3C2C-F214-48E4-A069-5208FEAD42A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3E3C2C-F214-48E4-A069-5208FEAD42A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2887141B-5866-400D-A4C5-AD08B1E92FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2887141B-5866-400D-A4C5-AD08B1E92FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2887141B-5866-400D-A4C5-AD08B1E92FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2887141B-5866-400D-A4C5-AD08B1E92FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
