@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bookish4
+namespace Bookish4._DataAccess
 {
     public class Book
     {

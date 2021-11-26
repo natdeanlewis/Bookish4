@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<BookViewModel>;
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Library</h1>
+
+    <p>Here's what's in the catalogue:</p>
+    @foreach (var viewModel in Model)
+    {
+        <p>@viewModel</p>
+    }
+</div>

@@ -6,11 +6,11 @@ using System.Globalization;
 using System.Linq;
 using Dapper;
 
-namespace Bookish4.DataAccess
+namespace Bookish4._DataAccess
 {
     public static class LibraryDatabaseClient
     {
-        public static void GetAllBooks()
+        public static List<Book> GetAllBooks()
         {
             using (IDbConnection db = new SqlConnection("Server=localhost;Database=Bookish;Trusted_Connection=True;"))
             {
@@ -25,9 +25,13 @@ namespace Bookish4.DataAccess
                 {
                     bookIds.Add(book.BookId);
                 }
-                
-                Console.WriteLine("Here's what's in the catalogue:");
-                foreach (var bookId in bookIds) Console.WriteLine(PrintBookInfo(bookId));
+
+                List<Book> output = new List<Book>();
+
+                // Console.WriteLine("Here's what's in the catalogue:");
+                foreach (var bookId in bookIds) output.Add(GetBookInfo(bookId));
+
+                return output;
             }
         }
 
@@ -52,7 +56,7 @@ namespace Bookish4.DataAccess
                 foreach (var loanedBook in result)
                 {
                     var date = loanedBook.DueDate.ToString("d", CultureInfo.CreateSpecificCulture("en-GB"));
-                    Console.WriteLine($"{PrintBookInfo(loanedBook.BookId)}, due back on {date}");
+                    Console.WriteLine($"{GetBookInfo(loanedBook.BookId)}, due back on {date}");
                 }
             }
         }
@@ -84,18 +88,18 @@ namespace Bookish4.DataAccess
                 }
 
                 Console.WriteLine("Here are the titles matching your search:");
-                foreach (var bookId in bookIds) Console.WriteLine(PrintBookInfo(bookId));
+                foreach (var bookId in bookIds) Console.WriteLine(GetBookInfo(bookId));
                 
                 
             }
         }
 
-        private static string PrintBookInfo(int bookId)
+        private static Book GetBookInfo(int bookId)
         {
             var book = new Book();
             book.Authors = GetBookAuthors(bookId);
             book.Title = GetBookTitle(bookId);
-            return book.ToString();
+            return book;
         }
 
         private static string GetBookTitle(int bookId)

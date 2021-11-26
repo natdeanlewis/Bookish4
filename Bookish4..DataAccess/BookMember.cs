@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bookish4
+namespace Bookish4._DataAccess
 {
     public class BookMember
     {

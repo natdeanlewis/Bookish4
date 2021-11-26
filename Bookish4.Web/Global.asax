@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Bookish4.Web.MvcApplication" Language="C#" %>
