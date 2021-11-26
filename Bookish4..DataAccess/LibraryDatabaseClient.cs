@@ -19,24 +19,22 @@ namespace Bookish4._DataAccess
 
                 var result = db.Query<Book>(sql);
                 result = result.GroupBy(x => x.Isbn).Select(x => x.First()).ToList();
-                
-                var bookIds = new List<int>();
+
+                var output = new List<Book>();
+
                 foreach (var book in result)
                 {
-                    bookIds.Add(book.BookId);
+                    Book b = GetBookInfo(book.BookId);
+                    b.Isbn = book.Isbn;
+                    output.Add(b);
                 }
-
-                List<Book> output = new List<Book>();
-
-                // Console.WriteLine("Here's what's in the catalogue:");
-                foreach (var bookId in bookIds) output.Add(GetBookInfo(bookId));
 
                 return output;
             }
         }
 
 
-        public static void GetAllLoans(int memberId)
+        public static List<Book> GetAllLoans(int memberId)
         {
             using (IDbConnection db = new SqlConnection("Server=localhost;Database=Bookish;Trusted_Connection=True;"))
             {
@@ -51,17 +49,22 @@ namespace Bookish4._DataAccess
 
                 var result = db.Query<Book>(sql, parameters);
 
-                Console.WriteLine("Your loaned book(s) are:");
+                var output = new List<Book>();
 
-                foreach (var loanedBook in result)
+                foreach (var book in result)
                 {
-                    var date = loanedBook.DueDate.ToString("d", CultureInfo.CreateSpecificCulture("en-GB"));
-                    Console.WriteLine($"{GetBookInfo(loanedBook.BookId)}, due back on {date}");
+                    Book b = GetBookInfo(book.BookId);
+                    b.Isbn = book.Isbn;
+                    b.DueDate = book.DueDate;
+                    output.Add(b);
                 }
+
+                return output;
+
             }
         }
 
-        public static void Search(string request)
+        public static List<Book> Search(string request)
         {
             var parameters = new {Request = request};
 
@@ -80,17 +83,16 @@ namespace Bookish4._DataAccess
 
                 result = result.GroupBy(x => x.Isbn).Select(x => x.First()).ToList();
 
-                var bookIds = new List<int>();
-                
+                var output = new List<Book>();
+
                 foreach (var book in result)
                 {
-                    bookIds.Add(book.BookId);
+                    Book b = GetBookInfo(book.BookId);
+                    b.Isbn = book.Isbn;
+                    output.Add(b);
                 }
 
-                Console.WriteLine("Here are the titles matching your search:");
-                foreach (var bookId in bookIds) Console.WriteLine(GetBookInfo(bookId));
-                
-                
+                return output;
             }
         }
 
@@ -140,7 +142,7 @@ namespace Bookish4._DataAccess
             }
         }
 
-        public static void CheckAvailability(int isbn)
+        public static List<string> CheckAvailability(int isbn)
         {
             using (IDbConnection db = new SqlConnection("Server=localhost;Database=Bookish;Trusted_Connection=True;"))
             {
@@ -152,16 +154,14 @@ namespace Bookish4._DataAccess
                     "WHERE b.ISBN = @Isbn";
 
                 var result = db.Query<int>(sql, parameters);
-                
-                Console.WriteLine($"We have {result.Count()} copy(ies) of this title in the catalogue:");
-                foreach (var bookId in result)
-                {
-                    GetLoanInfo(bookId);
-                }
+                List<string> output = null;
+                output.Add($"We have {result.Count()} copy(ies) of this title in the catalogue:");
+                foreach (var bookId in result) output.Add(GetLoanInfo(bookId));
+                return output;
             }
         }
 
-        public static void GetLoanInfo(int bookId)
+        public static string GetLoanInfo(int bookId)
         {
             using (IDbConnection db = new SqlConnection("Server=localhost;Database=Bookish;Trusted_Connection=True;"))
             {
@@ -169,24 +169,23 @@ namespace Bookish4._DataAccess
 
                 var parameters = new {BookId = bookId};
                 var sql =
-                    "SELECT bm.MemberId, bm.DueDate, m.Username FROM Book b "+
-                    "INNER JOIN BookMember bm ON b.BookId = bm.BookId "+
-                    "INNER JOIN Member m ON bm.MemberId = m.MemberId "+
+                    "SELECT bm.MemberId, bm.DueDate, m.Username FROM Book b " +
+                    "INNER JOIN BookMember bm ON b.BookId = bm.BookId " +
+                    "INNER JOIN Member m ON bm.MemberId = m.MemberId " +
                     "WHERE b.BookId = @BookId";
 
                 var result = db.Query<Book>(sql, parameters);
 
-                if (result.Count() ==  0)
+                if (result.Count() == 0)
                 {
-                    Console.WriteLine("Available to loan");
+                    return "Available to loan";
                 }
                 else
                 {
-                    Book book = result.First();
+                    var book = result.First();
                     var date = book.DueDate.ToString("d", CultureInfo.CreateSpecificCulture("en-GB"));
-                    Console.WriteLine($"Borrowed by {book.Username}, due back on {date}");
+                    return $"Borrowed by {book.Username}, due back on {date}";
                 }
-                
             }
         }
     }

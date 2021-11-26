@@ -1,15 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using System.Globalization
 @model List<BookViewModel>;
 
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to the Library</h1>
+<h1 class="display-4">Welcome to the Library</h1>
 
-    <p>Here's what's in the catalogue:</p>
-    @foreach (var viewModel in Model)
+<p>Here's a list of your loaned book(s):</p>
+
+<ul>
+    @foreach (var loanedBook in Model)
     {
-        <p>@viewModel</p>
+        var date = loanedBook.DueDate.ToString("d", CultureInfo.CreateSpecificCulture("en-GB"));
+        <li>@loanedBook, due back on @date</li>
     }
-</div>
+</ul>

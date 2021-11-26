@@ -22,22 +22,44 @@ namespace Bookish4.Web2.Controllers
         public IActionResult Index()
         {
             // Console.WriteLine();
-            // LibraryDatabaseClient.GetAllLoans(1);
+            var list = LibraryDatabaseClient.GetAllLoans(1);
             // Console.WriteLine();
             // LibraryDatabaseClient.Search("am");
             // Console.WriteLine();
             // LibraryDatabaseClient.CheckAvailability(4);
-            var list = LibraryDatabaseClient.GetAllBooks();
+            // var list = LibraryDatabaseClient.GetAllBooks();
 
             var viewModels = list.Select(b => new BookViewModel(b)).ToList();
             return View(viewModels);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Catalogue([FromQuery] string search)
+        {
+            List<Book> list;
+
+            if (search == null)
+            {
+                list = LibraryDatabaseClient.GetAllBooks();
+            }
+            else
+            {
+                list = LibraryDatabaseClient.Search(search);
+                foreach (var book in list)
+                {
+                    book.wasSearched = true;
+                }
+
+            }
+            
+            var viewModels = list.Select(b => new BookViewModel(b)).ToList();
+            return View(viewModels);
+        }
+
+        public IActionResult Book()
         {
             return View();
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

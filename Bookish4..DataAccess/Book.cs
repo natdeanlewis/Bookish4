@@ -16,6 +16,8 @@ namespace Bookish4._DataAccess
         public int Copies;
         public int MemberId;
         public string Username;
+        public bool wasSearched;
+        public List<String> loanInfo;
 
         public override string ToString()
         {
